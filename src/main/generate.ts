@@ -1,15 +1,17 @@
 import { writeFileSync } from "fs";
+import { txt } from "./demo";
 import { defaultFont } from "./config";
 import { archimedeanspiral, checkInBox } from "./placement";
 import { Point } from "./point";
 import { TTFPath } from "./TTFPath";
+import { cutWords } from "./wordcut";
 
-export function generate(words: string[], range: { x: number; y: number }) {
+export function generate(words: { word: string; weight: number }[], range: { x: number; y: number }) {
   const paths = new Array<TTFPath>();
   let xita = 10;
-  words.forEach((word, i) => {
-    const target = defaultFont.getPath(word);
-    target.transform.move(500, 300).scale(0.2 + (0.8 * (words.length - i)) / words.length);
+  words.forEach((v, i) => {
+    const target = defaultFont.getPath(v.word);
+    target.transform.scale(0.2 + 0.8 * v.weight);
     let lastP = new Point(0, 0);
     do {
       const p = archimedeanspiral(xita);
@@ -82,6 +84,4 @@ ${paths.map(v => v.toString()).join("\n")}
   `;
 }
 
-const text = ["海岳高深", "幽瑟", "染翰操纸", "贪幸", "hhhh", "abc", "百日黄", "轸转", "理财", "据本生利", "承载", "贾区", "默省", "凶妖", "燕舞莺歌"];
-
-writeFileSync("test.svg", generate(text, { x: 1000, y: 500 }));
+writeFileSync("test.svg", generate(cutWords(txt, 50), { x: 1000, y: 500 }));

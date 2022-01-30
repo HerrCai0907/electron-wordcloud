@@ -63,7 +63,7 @@ export class TTFPath {
   }
   transform = new Transform();
   constructor(commands: PathCommand[], box: BoundingBox) {
-    this._box = new Box(box.x1, box.x2, box.y1, box.y2);
+    this._box = new Box(Math.min(box.x1, box.x2) - 2, Math.max(box.x1, box.x2) + 2, Math.min(box.y1, box.y2) - 2, Math.max(box.y1, box.y2) + 2);
     this.commands = new Array(commands.length);
     for (let i = 0; i < commands.length; i++) {
       let cmd: Command;

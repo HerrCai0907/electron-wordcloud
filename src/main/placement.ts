@@ -2,8 +2,8 @@ import { Point } from "./point";
 import { Box } from "./TTFPath";
 
 export function archimedeanspiral(xita: number): Point {
-  const a = 10;
-  const b = 10;
+  const a = 0;
+  const b = 5;
   const t = a + b * xita;
   return new Point(t * Math.cos(xita), t * Math.sin(xita));
 }
