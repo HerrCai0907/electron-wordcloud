@@ -1,7 +1,7 @@
 import { writeFileSync } from "fs";
 import { txt } from "./demo";
 import { defaultFont } from "./config";
-import { archimedeanspiral, checkInBox } from "./placement";
+import { archimedeanspiral, isRectIntersect } from "./placement";
 import { Point } from "./point";
 import { TTFPath } from "./TTFPath";
 import { cutWords } from "./wordcut";
@@ -18,8 +18,11 @@ export function generate(words: { word: string; weight: number }[], range: { x: 
       target.transform.move(p.x - lastP.x, p.y - lastP.y);
       lastP = p;
       xita += 0.2;
-    } while (paths.some(v => checkInBox(v.box, target.box)));
+    } while (paths.some(v => isRectIntersect(v.box, target.box)));
     paths.push(target);
+    if ([20, 50].includes(i)) {
+      xita = 0;
+    }
   });
 
   let minx: number, maxx: number, miny: number, maxy: number;
@@ -33,15 +36,10 @@ export function generate(words: { word: string; weight: number }[], range: { x: 
   }
   paths.forEach(v => {
     const box = v.box;
-    if (box.x1 > maxx) maxx = box.x1;
-    if (box.x1 < minx) minx = box.x1;
-    if (box.x2 > maxx) maxx = box.x2;
-    if (box.x2 < minx) minx = box.x2;
-
-    if (box.y1 > maxy) maxy = box.y1;
-    if (box.y1 < miny) miny = box.y1;
-    if (box.y2 > maxy) maxy = box.y2;
-    if (box.y2 < miny) miny = box.y2;
+    maxx = Math.max(maxx, box.x1, box.x2);
+    minx = Math.min(maxx, box.x1, box.x2);
+    maxy = Math.max(maxy, box.y1, box.y2);
+    miny = Math.min(miny, box.y1, box.y2);
   });
   console.log(minx, maxx, miny, maxy);
   const x_scale = range.x / (maxx - minx);
@@ -57,24 +55,6 @@ export function generate(words: { word: string; weight: number }[], range: { x: 
     v.transform.scale(scale).move(scaleOffsetX, scaleOffsetY);
   });
 
-  minx = paths[0].box.x1;
-  maxx = minx;
-  miny = paths[0].box.y1;
-  maxy = miny;
-  paths.forEach(v => {
-    const box = v.box;
-    if (box.x1 > maxx) maxx = box.x1;
-    if (box.x1 < minx) minx = box.x1;
-    if (box.x2 > maxx) maxx = box.x2;
-    if (box.x2 < minx) minx = box.x2;
-
-    if (box.y1 > maxy) maxy = box.y1;
-    if (box.y1 < miny) miny = box.y1;
-    if (box.y2 > maxy) maxy = box.y2;
-    if (box.y2 < miny) miny = box.y2;
-  });
-  console.log(minx, maxx, miny, maxy);
-
   return `<?xml version="1.0" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
   <title>Example triangle01- simple example of a 'path'</title>
@@ -84,4 +64,4 @@ ${paths.map(v => v.toString()).join("\n")}
   `;
 }
 
-writeFileSync("test.svg", generate(cutWords(txt, 50), { x: 1000, y: 500 }));
+writeFileSync("test.svg", generate(cutWords(txt, 64), { x: 1000, y: 500 }));
