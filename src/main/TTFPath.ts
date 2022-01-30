@@ -1,4 +1,4 @@
-import { BoundingBox, Path, PathCommand } from "opentype.js";
+import { BoundingBox, PathCommand } from "opentype.js";
 import { Point } from "./point";
 import { Transform } from "./transform";
 
@@ -43,12 +43,15 @@ class CommandZ extends Command {
   }
 }
 
-class Box {
+export class Box {
   constructor(public x1: number, public x2: number, public y1: number, public y2: number) {}
   transform(t: Transform): Box {
     const p1 = new Point(this.x1, this.y1).transform(t);
     const p2 = new Point(this.x2, this.y2).transform(t);
     return new Box(p1.x, p2.x, p1.y, p2.y);
+  }
+  inBox(x: number, y: number): boolean {
+    return (x - this.x1) * (x - this.x2) <= 0 && (y - this.y1) * (y - this.y2) < 0;
   }
 }
 

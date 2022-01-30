@@ -25,7 +25,7 @@ export class Transform {
     return this;
   }
   scale(s: number): this {
-    this._scale = s;
+    this._scale *= s;
     return this;
   }
 }
