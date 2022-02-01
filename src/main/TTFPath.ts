@@ -94,6 +94,6 @@ export class TTFPath {
     }
   }
   toString(): string {
-    return `<path d="${this.commands.map(c => c.toString(this.transform)).join(" ")}"/>`;
+    return this.commands.map(c => c.toString(this.transform)).join(" ");
   }
 }

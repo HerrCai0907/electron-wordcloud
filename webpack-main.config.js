@@ -11,6 +11,9 @@ const config = {
     filename: "main.js",
     clean: true,
   },
+  externals: {
+    nodejieba: "commonjs nodejieba",
+  },
 };
 
 module.exports = Object.assign({}, commonConfig, config);

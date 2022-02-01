@@ -1,11 +1,18 @@
-import { app, BrowserWindow, globalShortcut } from "electron";
+import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent } from "electron";
+import { GenerateSvgArg, GenerateSvgReply } from "../common/interface";
 import { indexPath } from "./config";
+import { generate } from "./generate";
+import { cutWords } from "./wordcut";
 
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
   });
   globalShortcut.register("f12", function () {
     mainWindow.webContents.openDevTools();
@@ -34,5 +41,8 @@ app.on("activate", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+ipcMain.on("generate_svg", (event: IpcMainEvent, data: GenerateSvgArg) => {
+  const words = cutWords(data.text, 64);
+  const svgpath: GenerateSvgReply = generate(words, data);
+  event.reply("generate_svg_reply", svgpath);
+});

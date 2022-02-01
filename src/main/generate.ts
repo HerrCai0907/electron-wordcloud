@@ -1,14 +1,30 @@
-import { writeFileSync } from "fs";
-import { txt } from "./demo";
 import { defaultFont } from "./config";
 import { archimedeanspiral, isRectIntersect } from "./placement";
 import { Point } from "./point";
 import { TTFPath } from "./TTFPath";
-import { cutWords } from "./wordcut";
+
+function getPathRange(paths: TTFPath[]) {
+  if (paths.length === 0) {
+    console.error("paths length = 0");
+    return { minx: 0, maxx: 0, miny: 0, maxy: 0 };
+  }
+  let minx = paths[0].box.x1;
+  let maxx = minx;
+  let miny = paths[0].box.y1;
+  let maxy = miny;
+  paths.forEach(v => {
+    const box = v.box;
+    maxx = Math.max(maxx, box.x1, box.x2);
+    minx = Math.min(minx, box.x1, box.x2);
+    maxy = Math.max(maxy, box.y1, box.y2);
+    miny = Math.min(miny, box.y1, box.y2);
+  });
+  return { minx, maxx, miny, maxy };
+}
 
 export function generate(words: { word: string; weight: number }[], range: { x: number; y: number }) {
   const paths = new Array<TTFPath>();
-  let xita = 10;
+  let xita = Math.random() * 10;
   words.forEach((v, i) => {
     const target = defaultFont.getPath(v.word);
     target.transform.scale(0.2 + 0.8 * v.weight);
@@ -24,24 +40,7 @@ export function generate(words: { word: string; weight: number }[], range: { x: 
       xita = 0;
     }
   });
-
-  let minx: number, maxx: number, miny: number, maxy: number;
-  if (paths.length === 0) {
-    (minx = 0), (maxx = 0), (miny = 0), (maxy = 0);
-  } else {
-    minx = paths[0].box.x1;
-    maxx = minx;
-    miny = paths[0].box.y1;
-    maxy = miny;
-  }
-  paths.forEach(v => {
-    const box = v.box;
-    maxx = Math.max(maxx, box.x1, box.x2);
-    minx = Math.min(maxx, box.x1, box.x2);
-    maxy = Math.max(maxy, box.y1, box.y2);
-    miny = Math.min(miny, box.y1, box.y2);
-  });
-  console.log(minx, maxx, miny, maxy);
+  const { minx, maxx, miny, maxy } = getPathRange(paths);
   const x_scale = range.x / (maxx - minx);
   const y_scale = range.y / (maxy - miny);
   const scale = Math.min(x_scale, y_scale) * 0.9;
@@ -55,13 +54,6 @@ export function generate(words: { word: string; weight: number }[], range: { x: 
     v.transform.scale(scale).move(scaleOffsetX, scaleOffsetY);
   });
 
-  return `<?xml version="1.0" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <title>Example triangle01- simple example of a 'path'</title>
-  <desc>A path that draws a triangle</desc>
-${paths.map(v => v.toString()).join("\n")}
-</svg>
-  `;
+  console.log(getPathRange(paths));
+  return paths.map(v => v.toString());
 }
-
-writeFileSync("test.svg", generate(cutWords(txt, 64), { x: 1000, y: 500 }));
