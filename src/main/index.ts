@@ -2,7 +2,7 @@ import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent } from "elect
 import { GenerateSvgArg, GenerateSvgReply } from "../common/interface";
 import { indexPath } from "./config";
 import { generate } from "./generate";
-import { cutWords } from "./wordcut";
+import { cutWords, cutWordsFromFiles } from "./wordcut";
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -41,8 +41,8 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on("generate_svg", (event: IpcMainEvent, data: GenerateSvgArg) => {
-  const words = cutWords(data.text, 64);
+ipcMain.on("generate_svg", async (event: IpcMainEvent, data: GenerateSvgArg) => {
+  const words = await cutWordsFromFiles(data.path, 64);
   const svgpath: GenerateSvgReply = generate(words, data);
   event.reply("generate_svg_reply", svgpath);
 });

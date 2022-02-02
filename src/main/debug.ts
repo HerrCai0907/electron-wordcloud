@@ -7,7 +7,7 @@ export function addDebug(d: any) {
   }
 }
 ipcMain.on("debug-req", event => {
-  if (debugInfo.length > 0) {
+  if (debugInfo && debugInfo.length > 0) {
     event.reply("debug", debugInfo);
     debugInfo = [];
   }

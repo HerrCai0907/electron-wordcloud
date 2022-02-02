@@ -1,3 +1,4 @@
+import { ExtractResult } from "nodejieba";
 import { defaultFont } from "./config";
 import { archimedeanspiral, isRectIntersect } from "./placement";
 import { Point } from "./point";
@@ -22,7 +23,7 @@ function getPathRange(paths: TTFPath[]) {
   return { minx, maxx, miny, maxy };
 }
 
-export function generate(words: { word: string; weight: number }[], range: { x: number; y: number }) {
+export function generate(words: ExtractResult[], range: { x: number; y: number }) {
   const paths = new Array<TTFPath>();
   let xita = Math.random() * 10;
   words.forEach((v, i) => {

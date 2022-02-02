@@ -14,18 +14,16 @@ import user_dict from "../../node_modules/nodejieba/dict/user.dict.utf8";
 
 import { TTFFont } from "./TTFFont";
 import { readFileSync } from "fs";
-import { resolve } from "path";
-import { addDebug } from "./debug";
+import { join } from "path";
 
 export const jiebaDictOption = {
-  dict: resolve(__dirname, jieba_dict),
-  hmmDict: resolve(__dirname, hmm_model),
-  userDict: resolve(__dirname, user_dict),
-  idfDict: resolve(__dirname, idf),
-  stopWordDict: resolve(__dirname, stop_words),
+  dict: join(__dirname, jieba_dict),
+  hmmDict: join(__dirname, hmm_model),
+  userDict: join(__dirname, user_dict),
+  idfDict: join(__dirname, idf),
+  stopWordDict: join(__dirname, stop_words),
 };
-addDebug(jiebaDictOption);
 
-export const indexPath: string = resolve(__dirname, "..", "web", "index.html");
-const ttf = readFileSync(resolve(__dirname, defaultFontPath));
+export const indexPath: string = join(__dirname, "..", "web", "index.html");
+const ttf = readFileSync(join(__dirname, defaultFontPath));
 export const defaultFont = new TTFFont(ttf.buffer);
