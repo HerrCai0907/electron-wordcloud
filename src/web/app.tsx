@@ -6,9 +6,12 @@ import "./app.css";
 import { GenerateSvgArg, GenerateSvgReply } from "../common/interface";
 import { txt } from "../common/demo";
 
-ipcRenderer.on("gen-reply", (event, arg) => {
-  console.log("异步消息:", arg);
+ipcRenderer.on("debug", (event, arg) => {
+  console.log("DEBUG:", arg);
 });
+setInterval(() => {
+  ipcRenderer.send("debug-req");
+}, 10);
 
 const colorSet = ["#86E3CE", "#D0E6A5", "#FFDD94", "#FA897B", "#CCABD8"];
 

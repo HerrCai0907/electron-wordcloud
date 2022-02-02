@@ -1,6 +1,6 @@
 module.exports = {
   mode: "development",
-  // devtool: "source-map",
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -17,6 +17,10 @@ module.exports = {
             loader: "css-loader", // 放在后面的先被解析
           },
         ],
+      },
+      {
+        test: /\.(ttf|utf8)/,
+        type: "asset/resource",
       },
     ],
   },

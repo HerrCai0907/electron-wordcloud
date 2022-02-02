@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
+    "postinstall": "electron-builder install-app-deps",
     "build:web": "webpack -c webpack-renderer.config.js",
     "build:main": "webpack -c webpack-main.config.js",
     "build": "npm run build:web && npm run build:main",
@@ -15,6 +16,8 @@
   },
   "build": {
     "appId": "com.electron.electron-worldcloud",
+    "compression": "store",
+    "asar": false,
     "files": [
       "./dist/main/**/*",
       "./dist/web/**/*"
