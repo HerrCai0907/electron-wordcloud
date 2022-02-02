@@ -10,6 +10,8 @@ ipcRenderer.on("gen-reply", (event, arg) => {
   console.log("异步消息:", arg);
 });
 
+const colorSet = ["#86E3CE", "#D0E6A5", "#FFDD94", "#FA897B", "#CCABD8"];
+
 class App extends Component<{}, { svgPath: string[] }> {
   constructor(props: {}) {
     super(props);
@@ -44,7 +46,7 @@ class App extends Component<{}, { svgPath: string[] }> {
             <rect x="1" y="1" width="499" height="499" fill="none" stroke="pink" strokeWidth={5} />
             <desc>A path that draws a triangle</desc>
             {this.state.svgPath.map(v => (
-              <path d={v}></path>
+              <path d={v} fill={colorSet[Math.floor(Math.random() * colorSet.length)]} />
             ))}
           </svg>
         </div>
