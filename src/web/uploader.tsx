@@ -11,18 +11,17 @@ export class Uploader extends Component<{}, {}> {
     name: "file",
     multiple: true,
     action: undefined,
-    onRemove: file => {
-      console.log(file);
-      if (file.originFileObj) {
-        filePaths.remove(file.originFileObj.path);
-      }
-      return true;
-    },
-    onDrop: (e: React.DragEvent<HTMLDivElement>) => {
-      console.log("Dropped files", e.dataTransfer.files);
-      const k = e.dataTransfer.files.length;
-      for (let i = 0; i < k; i++) {
-        filePaths.add(e.dataTransfer.files[i].path);
+    onChange: info => {
+      if (info.file.originFileObj == undefined) return;
+      switch (info.file.status) {
+        case "done": {
+          filePaths.add(info.file.originFileObj.path);
+          break;
+        }
+        case "removed": {
+          filePaths.remove(info.file.originFileObj.path);
+          break;
+        }
       }
     },
   };
