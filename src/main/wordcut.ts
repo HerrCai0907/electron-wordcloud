@@ -1,8 +1,8 @@
-import { promises, statSync } from "fs";
-const readFile = promises.readFile;
+import { statSync } from "fs";
 import { extract, ExtractResult, load, textRankExtract } from "nodejieba";
 import { jiebaDictOption } from "./config";
 import { addDebug } from "./debug";
+import { getFileString } from "./fileReader";
 
 load(jiebaDictOption);
 
@@ -10,8 +10,7 @@ export function cutWords(paper: string, topN: number): ExtractResult[] {
   return textRankExtract(paper, topN);
 }
 
-export async function cutWordsFromFiles(paths: string[], topN: number, onChange?: (process: number) => void): Promise<ExtractResult[]> {
-  let currProcess = 0;
+export async function cutWordsFromFiles(paths: string[], topN: number): Promise<ExtractResult[]> {
   let totalProcess = new Array<number>(paths.length);
   let mapping = new Map<string, number>();
   paths.forEach((v, i) => {
@@ -25,8 +24,7 @@ export async function cutWordsFromFiles(paths: string[], topN: number, onChange?
   });
   await Promise.all(
     paths.map(async (v, i) => {
-      const buf = await readFile(v);
-      const str = buf.toString("utf8");
+      const str = await getFileString(v);
       const cutRes = extract(str, topN);
       console.log(cutRes);
       cutRes.forEach(v => {
@@ -39,7 +37,6 @@ export async function cutWordsFromFiles(paths: string[], topN: number, onChange?
       });
     })
   );
-
   let res = new Array<ExtractResult>();
   let maxExtractValue = 0;
   mapping.forEach((v, k) => {
