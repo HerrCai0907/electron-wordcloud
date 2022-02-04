@@ -19,7 +19,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ttf|utf8)/,
+        test: /(\.ttf|\.utf8|(pdf\.worker\.min\.js))/,
         type: "asset/resource",
       },
     ],

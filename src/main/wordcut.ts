@@ -2,7 +2,7 @@ import { statSync } from "fs";
 import { extract, ExtractResult, load, textRankExtract } from "nodejieba";
 import { jiebaDictOption } from "./config";
 import { addDebug } from "./debug";
-import { getFileString } from "./fileReader";
+import { getText } from "./reader/fileReader";
 
 load(jiebaDictOption);
 
@@ -24,7 +24,7 @@ export async function cutWordsFromFiles(paths: string[], topN: number): Promise<
   });
   await Promise.all(
     paths.map(async (v, i) => {
-      const str = await getFileString(v);
+      const str = await getText(v);
       const cutRes = extract(str, topN);
       console.log(cutRes);
       cutRes.forEach(v => {

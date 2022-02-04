@@ -12,6 +12,9 @@ import stop_words from "../../node_modules/nodejieba/dict/stop_words.utf8";
 //@ts-ignore
 import user_dict from "../../node_modules/nodejieba/dict/user.dict.utf8";
 
+//@ts-ignore
+import pdf_worker_js from "pdfjs-dist/legacy/build/pdf.worker.min.js";
+
 import { TTFFont } from "./TTFFont";
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -23,6 +26,8 @@ export const jiebaDictOption = {
   idfDict: join(__dirname, idf),
   stopWordDict: join(__dirname, stop_words),
 };
+
+export const pdfWorkerPath = join(__dirname, pdf_worker_js);
 
 export const indexPath: string = join(__dirname, "..", "web", "index.html");
 const ttf = readFileSync(join(__dirname, defaultFontPath));
