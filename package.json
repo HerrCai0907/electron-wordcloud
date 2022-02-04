@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "echo electron-builder install-app-deps",
+    "postinstall": "scripts/postinstall.js && electron-builder install-app-deps",
     "build:web": "webpack -c webpack-renderer.config.js",
     "build:main": "webpack -c webpack-main.config.js",
     "build": "npm run build:web && npm run build:main",
