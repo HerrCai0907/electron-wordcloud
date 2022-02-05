@@ -6,13 +6,13 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "scripts/postinstall.js && electron-builder install-app-deps",
+    "postinstall": "scripts/postinstall.js",
     "build:web": "webpack -c webpack-renderer.config.js",
     "build:main": "webpack -c webpack-main.config.js",
     "build": "npm run build:web && npm run build:main",
     "watch": "webpack -c webpack-renderer.config.js -w &  webpack -c webpack-main.config.js -w",
-    "pack": "electron-builder",
-    "start": "electron ."
+    "pack": "npm run build && electron-builder",
+    "start": "electron --trace-warnings ."
   },
   "build": {
     "appId": "com.electron.electron-worldcloud",

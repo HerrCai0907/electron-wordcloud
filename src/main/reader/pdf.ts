@@ -1,9 +1,8 @@
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 import { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
-import { join } from "path";
 import { pdfWorkerPath } from "../config";
 
-GlobalWorkerOptions.workerSrc = join(__dirname, pdfWorkerPath);
+GlobalWorkerOptions.workerSrc = pdfWorkerPath;
 
 export async function getTextFromPDF(path: string) {
   let doc = await getDocument(path).promise;
