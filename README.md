@@ -4,7 +4,7 @@
 
 词云是一个基于 electron 构建的 typescript 项目，可以根据文本内容生成对应的词云
 
-支持 docx，文字格式的 pdf（无 ocr 功能）
+支持 普通文本，docx，文字格式的 pdf（无 ocr 功能）
 
 ### 安装
 
