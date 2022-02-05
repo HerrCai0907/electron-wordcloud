@@ -55,7 +55,6 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "color.js": "^1.2.0",
     "htmlparser2": "^7.2.0",
     "iconv-lite": "^0.6.3",
     "jschardet": "^3.0.0",
