@@ -5,8 +5,7 @@ export function intelligentDecode(buf: Buffer): string {
   const encoding = detect(buf);
   console.log(encoding);
   if (encoding.confidence < 0.8) {
-    // addDebug(`unknown encoding of ${path}`);
-    return "";
+    throw Error("unkonwn encoding");
   }
   return decode(buf, encoding.encoding);
 }

@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron";
 import React, { Component } from "react";
-import { GenerateSvgReply } from "../common/interface";
+import { GenerateSvgReply } from "../common/generateInterface";
 
 const colorSet = ["#86E3CE", "#D0E6A5", "#FFDD94", "#FA897B", "#CCABD8"];
 

@@ -1,21 +1,14 @@
 import { ipcRenderer } from "electron";
 import React, { Component } from "react";
-import { render } from "react-dom";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
+const { Title } = Typography;
 import "./app.css";
-import { GenerateSvgArg } from "../common/interface";
+import { GenerateSvgArg } from "../common/generateInterface";
 import { SvgDisplayer } from "./svgDisplayer";
 import { Uploader } from "./uploader";
 import { filePaths } from "./global";
 
-ipcRenderer.on("debug", (event, arg) => {
-  console.log("DEBUG:", arg);
-});
-setInterval(() => {
-  ipcRenderer.send("debug-req");
-}, 1000);
-
-class App extends Component<{}, { svgPath: string[] }> {
+export class App extends Component<{}, { svgPath: string[] }> {
   onclick = () => {
     let arg: GenerateSvgArg = {
       x: 500,
@@ -28,6 +21,7 @@ class App extends Component<{}, { svgPath: string[] }> {
   render() {
     return (
       <div>
+        <Title level={2}>词云生成器</Title>
         <Uploader />
         <div>
           <Button type="primary" onClick={this.onclick}>
@@ -39,5 +33,3 @@ class App extends Component<{}, { svgPath: string[] }> {
     );
   }
 }
-
-render(<App />, window.document.getElementById("app"));

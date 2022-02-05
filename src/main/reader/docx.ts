@@ -4,15 +4,26 @@ import { Parser as XmlParser } from "htmlparser2";
 
 export async function getTextFromDocx(path: string): Promise<string> {
   const zip = new ZipAsync({ file: path });
-  let xmlstr = "";
-  const entries = await zip.entries();
-  for (const entry of Object.values(entries)) {
-    if (entry.name.endsWith("document.xml")) {
-      xmlstr = intelligentDecode(await zip.entryData(entry.name));
-      break;
+  let xmlBuffer: Buffer | null = null;
+  try {
+    const entries = await zip.entries();
+    for (const entry of Object.values(entries)) {
+      if (entry.name.endsWith("document.xml")) {
+        xmlBuffer = await zip.entryData(entry.name);
+        break;
+      }
     }
+  } catch (e) {
+    throw e;
+  } finally {
+    await zip.close();
   }
-  await zip.close();
+  if (xmlBuffer == null) {
+    throw Error("invaild .docx file");
+  }
+  const xmlstr = intelligentDecode(xmlBuffer);
+  console.log(xmlstr);
+
   return parserXml(xmlstr);
 }
 

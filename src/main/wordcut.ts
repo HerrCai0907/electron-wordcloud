@@ -2,6 +2,7 @@ import { statSync } from "fs";
 import { extract, ExtractResult, load, textRankExtract } from "nodejieba";
 import { jiebaDictOption } from "./config";
 import { addDebug } from "./debug";
+import { emitError } from "./errorhandler";
 import { getText } from "./reader/fileReader";
 
 load(jiebaDictOption);
@@ -13,18 +14,24 @@ export function cutWords(paper: string, topN: number): ExtractResult[] {
 export async function cutWordsFromFiles(paths: string[], topN: number): Promise<ExtractResult[]> {
   let totalProcess = new Array<number>(paths.length);
   let mapping = new Map<string, number>();
-  paths.forEach((v, i) => {
-    const status = statSync(v);
+  paths.forEach((path, i) => {
+    const status = statSync(path);
     if (!status.isFile()) {
       totalProcess[i] = 0;
-      addDebug(`${v} is not file`);
+      emitError("not a file", path);
       return;
     }
     totalProcess[i] = status.size;
   });
   await Promise.all(
-    paths.map(async (v, i) => {
-      const str = await getText(v);
+    paths.map(async (path, i) => {
+      let str: string;
+      try {
+        str = await getText(path);
+      } catch (e) {
+        emitError(`${e}`, path);
+        return;
+      }
       const cutRes = extract(str, topN);
       console.log(cutRes);
       cutRes.forEach(v => {

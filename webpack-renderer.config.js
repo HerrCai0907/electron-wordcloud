@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const commonConfig = require("./webpack.config");
 
 const config = {
-  entry: "./src/web/app.tsx",
+  entry: "./src/web/index.tsx",
   target: "electron-renderer",
   output: {
     path: path.resolve(__dirname, "./dist/web"),

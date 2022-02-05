@@ -1,8 +1,10 @@
-import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent } from "electron";
-import { GenerateSvgArg, GenerateSvgReply } from "../common/interface";
+import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent, WebContents } from "electron";
+import { GenerateSvgArg, GenerateSvgReply } from "../common/generateInterface";
 import { indexPath } from "./config";
 import { generate } from "./generate";
-import { cutWords, cutWordsFromFiles } from "./wordcut";
+import { cutWordsFromFiles } from "./wordcut";
+
+export let webContents: WebContents;
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -12,6 +14,9 @@ const createWindow = (): void => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      defaultFontFamily: {
+        standard: "Times-Roman",
+      },
     },
   });
   globalShortcut.register("f12", function () {
@@ -19,6 +24,7 @@ const createWindow = (): void => {
   });
   // and load the index.html of the app.
   mainWindow.loadURL("file://" + indexPath);
+  webContents = mainWindow.webContents;
 };
 
 // This method will be called when Electron has finished
