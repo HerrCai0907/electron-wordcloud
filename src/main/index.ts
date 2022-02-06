@@ -2,7 +2,6 @@ import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent, WebContents 
 import { Channal, ChannalType } from "../common/api";
 import { indexPath } from "./config";
 import { SvgGenerator } from "./generate";
-import { cutWordsFromFiles } from "./wordcut";
 
 export let webContents: WebContents;
 

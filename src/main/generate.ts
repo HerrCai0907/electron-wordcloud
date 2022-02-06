@@ -1,8 +1,6 @@
-import { extract, ExtractResult } from "nodejieba";
-import { defaultFont } from "./config";
-import { emitError } from "./errorhandler";
+import { extract, ExtractResult, load as jiebaLoad } from "nodejieba";
+import { jiebaDictOption } from "./config";
 import { placementAllWords, scaleToMatchSize } from "./placement";
-import { Point } from "./point";
 import { getTextSafe } from "./reader/fileReader";
 import { TTFPath } from "./TTFPath";
 
@@ -11,6 +9,10 @@ export class SvgGenerator {
   private wordsMapping = new Map<string, ExtractResult[]>();
   private ttfPaths = new Array<TTFPath>();
   private size: number = 200;
+
+  constructor() {
+    jiebaLoad(jiebaDictOption);
+  }
 
   async onAddFiles(paths: string[]) {
     if (paths.length === 0) return;
