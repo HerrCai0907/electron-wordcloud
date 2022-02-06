@@ -1,6 +1,6 @@
 import { ipcRenderer, IpcRendererEvent } from "electron";
 import React, { Component } from "react";
-import { GenerateSvgReply } from "../common/generateInterface";
+import { Channal, ChannalType } from "../common/api";
 
 const colorSet = ["#86E3CE", "#D0E6A5", "#FFDD94", "#FA897B", "#CCABD8"];
 
@@ -20,22 +20,24 @@ export class SvgDisplayer extends Component<P, S> {
 
   onChangeSize = () => {
     if (this.myRef.current) {
+      const width: ChannalType.ChangeSize = this.myRef.current.clientWidth;
       this.setState({
-        l: this.myRef.current.clientWidth,
+        l: width,
       });
+      ipcRenderer.send(Channal.changeSize, width);
     }
   };
-  onRecvData = (event: IpcRendererEvent, data: GenerateSvgReply) => {
+  onRecvData = (event: IpcRendererEvent, data: ChannalType.SvgUpdated) => {
     this.setState({ svgPath: data });
   };
 
   override componentDidMount = () => {
     this.onChangeSize();
-    ipcRenderer.on("generate_svg_reply", this.onRecvData);
+    ipcRenderer.on(Channal.svgUpdated, this.onRecvData);
     window.addEventListener("resize", this.onChangeSize); //监听窗口大小改变
   };
   override componentWillUnmount = () => {
-    ipcRenderer.off("generate_svg_reply", this.onRecvData);
+    ipcRenderer.off(Channal.svgUpdated, this.onRecvData);
     window.removeEventListener("resize", this.onChangeSize); //监听窗口大小改变
   };
 
@@ -43,7 +45,6 @@ export class SvgDisplayer extends Component<P, S> {
     return (
       <div ref={this.myRef}>
         <svg width={this.state.l} height={this.state.l} xmlns="http://www.w3.org/2000/svg" version="1.1">
-          {/* <title>词云</title> */}
           <rect x="1" y="1" width={this.state.l - 1} height={this.state.l - 1} fill="none" stroke="pink" strokeWidth={5} />
           {this.state.svgPath.map((v, i) => (
             <path d={v} key={i} fill={colorSet[Math.floor(Math.random() * colorSet.length)]} />

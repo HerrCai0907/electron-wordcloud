@@ -6,16 +6,8 @@ import { Channal } from "../common/api";
 import { ErrorMessage } from "../common/errorInterface";
 import { openNotification } from "./errorMessage";
 
-// debug
-ipcRenderer.on("debug", (event, arg) => {
-  console.log("DEBUG:", arg);
-});
-setInterval(() => {
-  ipcRenderer.send("debug-req");
-}, 1000);
-
 // error
-ipcRenderer.on(Channal.errorhappened, (event, args: ErrorMessage) => {
+ipcRenderer.on(Channal.errorHappened, (event, args: ErrorMessage) => {
   openNotification(args.msg, args.desc);
 });
 

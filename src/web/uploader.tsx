@@ -4,7 +4,8 @@ const { Dragger } = Upload;
 import { InboxOutlined } from "@ant-design/icons";
 import { Component } from "react";
 import { UploadFile } from "antd/lib/upload/interface";
-import { filePaths } from "./global";
+import { ipcRenderer } from "electron";
+import { Channal } from "../common/api";
 
 export class Uploader extends Component<{}, {}> {
   draggerProps: UploadProps<UploadFile> = {
@@ -15,11 +16,11 @@ export class Uploader extends Component<{}, {}> {
       if (info.file.originFileObj == undefined) return;
       switch (info.file.status) {
         case "done": {
-          filePaths.add(info.file.originFileObj.path);
+          ipcRenderer.send(Channal.addFiles, [info.file.originFileObj.path]);
           break;
         }
         case "removed": {
-          filePaths.remove(info.file.originFileObj.path);
+          ipcRenderer.send(Channal.removeFiles, [info.file.originFileObj.path]);
           break;
         }
       }

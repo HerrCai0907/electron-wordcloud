@@ -1,4 +1,5 @@
 import { promises } from "fs";
+import { emitError } from "../errorhandler";
 const readFile = promises.readFile;
 import { intelligentDecode } from "./decode";
 import { getTextFromDocx } from "./docx";
@@ -13,4 +14,14 @@ export async function getText(path: string): Promise<string> {
   }
   const buf = await readFile(path);
   return intelligentDecode(buf);
+}
+
+export async function getTextSafe(path: string): Promise<string> {
+  let str = "";
+  try {
+    str = await getText(path);
+  } catch (e) {
+    emitError(`${e}`, path);
+  }
+  return str;
 }

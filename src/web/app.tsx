@@ -1,24 +1,12 @@
-import { ipcRenderer } from "electron";
 import React, { Component } from "react";
-import { Button, Card, Col, Row, Typography, Layout } from "antd";
+import { Card, Col, Row, Typography, Layout } from "antd";
 const { Title } = Typography;
 const { Content, Footer, Header } = Layout;
 import "./app.css";
-import { GenerateSvgArg } from "../common/generateInterface";
 import { SvgDisplayer } from "./svgDisplayer";
 import { Uploader } from "./uploader";
-import { filePaths } from "./global";
 
 export class App extends Component<{}, { svgPath: string[] }> {
-  onclick = () => {
-    let arg: GenerateSvgArg = {
-      x: 300,
-      y: 300,
-      path: filePaths.filePaths,
-    };
-    ipcRenderer.send("generate_svg", arg);
-  };
-
   render() {
     return (
       <Layout className="layout">
@@ -33,12 +21,6 @@ export class App extends Component<{}, { svgPath: string[] }> {
               <Col span={12}>
                 <Card title="编辑区" bordered={true}>
                   <Uploader />
-                  <br />
-                  <div style={{ textAlign: "center" }}>
-                    <Button type="primary" onClick={this.onclick}>
-                      生成词云
-                    </Button>
-                  </div>
                 </Card>
               </Col>
               <Col span={12}>

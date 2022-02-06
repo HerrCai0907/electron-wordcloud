@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent, WebContents } from "electron";
-import { GenerateSvgArg, GenerateSvgReply } from "../common/generateInterface";
+import { Channal, ChannalType } from "../common/api";
 import { indexPath } from "./config";
-import { generate } from "./generate";
+import { SvgGenerator } from "./generate";
 import { cutWordsFromFiles } from "./wordcut";
 
 export let webContents: WebContents;
@@ -47,8 +47,17 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on("generate_svg", async (event: IpcMainEvent, data: GenerateSvgArg) => {
-  const words = await cutWordsFromFiles(data.path, 64);
-  const svgpath: GenerateSvgReply = generate(words, data);
-  event.reply("generate_svg_reply", svgpath);
+const svgGenerator = new SvgGenerator();
+
+ipcMain.on(Channal.addFiles, async (ev: IpcMainEvent, data: ChannalType.AddFiles) => {
+  await svgGenerator.onAddFiles(data);
+  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
+});
+ipcMain.on(Channal.removeFiles, async (ev: IpcMainEvent, data: ChannalType.RemoveFiles) => {
+  svgGenerator.onRemoveFiles(data);
+  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
+});
+ipcMain.on(Channal.changeSize, async (ev: IpcMainEvent, data: ChannalType.ChangeSize) => {
+  svgGenerator.onChangeSize(data);
+  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
 });

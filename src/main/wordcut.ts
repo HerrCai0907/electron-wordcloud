@@ -1,7 +1,6 @@
 import { statSync } from "fs";
 import { extract, ExtractResult, load, textRankExtract } from "nodejieba";
 import { jiebaDictOption } from "./config";
-import { addDebug } from "./debug";
 import { emitError } from "./errorhandler";
 import { getText } from "./reader/fileReader";
 
