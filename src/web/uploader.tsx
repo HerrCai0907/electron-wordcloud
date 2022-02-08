@@ -7,6 +7,25 @@ import { UploadFile } from "antd/lib/upload/interface";
 import { ipcRenderer } from "electron";
 import { Channal } from "../common/api";
 
+export function debounce<T>(dothing: (data: T[]) => void, step: number) {
+  let isProcess = false;
+  let pendingQueue: T[] = [];
+  return function (data: T) {
+    if (isProcess) {
+      pendingQueue.push(data);
+    } else {
+      isProcess = true;
+      setTimeout(() => {
+        dothing(pendingQueue);
+        isProcess = false;
+        pendingQueue = [];
+      }, step);
+    }
+  };
+}
+
+const addFiles = debounce<string>(paths => ipcRenderer.send(Channal.addFiles, paths), 100);
+
 export class Uploader extends Component<{}, {}> {
   draggerProps: UploadProps<UploadFile> = {
     name: "file",
@@ -16,7 +35,7 @@ export class Uploader extends Component<{}, {}> {
       if (info.file.originFileObj == undefined) return;
       switch (info.file.status) {
         case "done": {
-          ipcRenderer.send(Channal.addFiles, [info.file.originFileObj.path]);
+          addFiles(info.file.originFileObj.path);
           break;
         }
         case "removed": {
