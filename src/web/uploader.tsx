@@ -6,26 +6,10 @@ import { Component } from "react";
 import { UploadFile } from "antd/lib/upload/interface";
 import { ipcRenderer } from "electron";
 import { Channal } from "../common/api";
+import { debounceArray } from "./debounce";
 
-export function debounce<T>(dothing: (data: T[]) => void, step: number) {
-  let isProcess = false;
-  let pendingQueue: { v: T[] } = { v: [] };
-  return function (data: T) {
-    pendingQueue.v.push(data);
-    if (!isProcess) {
-      isProcess = true;
-      setTimeout(() => {
-        const processData = pendingQueue.v;
-        isProcess = false;
-        pendingQueue.v = [];
-        dothing(processData);
-      }, step);
-    }
-  };
-}
-
-const addFiles = debounce<string>(paths => ipcRenderer.send(Channal.addFiles, paths), 100);
-const removeFiles = debounce<string>(paths => ipcRenderer.send(Channal.removeFiles, paths), 100);
+const addFiles = debounceArray<string>(paths => ipcRenderer.send(Channal.addFiles, paths), 100);
+const removeFiles = debounceArray<string>(paths => ipcRenderer.send(Channal.removeFiles, paths), 100);
 
 export class Uploader extends Component<{}, {}> {
   draggerProps: UploadProps<UploadFile> = {
