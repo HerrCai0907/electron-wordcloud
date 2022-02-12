@@ -1,8 +1,8 @@
 import { extract, ExtractResult, load as jiebaLoad } from "nodejieba";
 import { jiebaDictOption } from "./config";
-import { placementAllWords, scaleToMatchSize } from "./placement";
+import { placementAllWords, scaleToMatchSize } from "./geometry/placement";
 import { getTextSafe } from "./reader/fileReader";
-import { TTFPath } from "./TTFPath";
+import { TTFPath } from "./font/TTFPath";
 
 const topN = 64; // TODO
 export class SvgGenerator {

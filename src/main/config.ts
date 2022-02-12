@@ -15,7 +15,7 @@ import user_dict from "../../node_modules/nodejieba/dict/user.dict.utf8";
 //@ts-ignore
 import pdf_worker_js from "pdfjs-dist/legacy/build/pdf.worker.min.js";
 
-import { TTFFont } from "./TTFFont";
+import { TTFFont } from "./font/TTFFont";
 import { readFileSync } from "fs";
 import { join } from "path";
 

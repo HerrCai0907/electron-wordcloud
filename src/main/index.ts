@@ -46,6 +46,8 @@ app.on("activate", () => {
   }
 });
 
+// svg API
+
 const svgGenerator = new SvgGenerator();
 
 ipcMain.on(Channal.addFiles, async (ev: IpcMainEvent, data: ChannalType.AddFiles) => {
@@ -63,3 +65,5 @@ ipcMain.on(Channal.changeSize, async (ev: IpcMainEvent, data: ChannalType.Change
   svgGenerator.onChangeSize(data);
   ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
 });
+
+// color API

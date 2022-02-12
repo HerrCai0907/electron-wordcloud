@@ -1,7 +1,7 @@
 import { ExtractResult } from "nodejieba";
-import { defaultFont } from "./config";
+import { defaultFont } from "../config";
 import { Point } from "./point";
-import { Box, TTFPath } from "./TTFPath";
+import { Box, TTFPath } from "../font/TTFPath";
 
 function archimedeanspiral(xita: number): Point {
   const a = 0;
@@ -20,7 +20,6 @@ function isRectIntersect(a: Box, b: Box): boolean {
 
 function getPathRange(paths: TTFPath[]) {
   if (paths.length === 0) {
-    console.error("paths length = 0");
     return { minx: 0, maxx: 0, miny: 0, maxy: 0 };
   }
   let minx = paths[0].box.x1;

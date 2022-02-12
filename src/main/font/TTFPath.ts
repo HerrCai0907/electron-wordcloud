@@ -1,6 +1,6 @@
 import { BoundingBox, PathCommand } from "opentype.js";
-import { Point } from "./point";
-import { Transform } from "./transform";
+import { Point } from "../geometry/point";
+import { Transform } from "../geometry/transform";
 
 abstract class Command {
   abstract toString(transform: Transform): string;
