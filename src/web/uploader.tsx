@@ -9,22 +9,23 @@ import { Channal } from "../common/api";
 
 export function debounce<T>(dothing: (data: T[]) => void, step: number) {
   let isProcess = false;
-  let pendingQueue: T[] = [];
+  let pendingQueue: { v: T[] } = { v: [] };
   return function (data: T) {
-    if (isProcess) {
-      pendingQueue.push(data);
-    } else {
+    pendingQueue.v.push(data);
+    if (!isProcess) {
       isProcess = true;
       setTimeout(() => {
-        dothing(pendingQueue);
+        const processData = pendingQueue.v;
         isProcess = false;
-        pendingQueue = [];
+        pendingQueue.v = [];
+        dothing(processData);
       }, step);
     }
   };
 }
 
 const addFiles = debounce<string>(paths => ipcRenderer.send(Channal.addFiles, paths), 100);
+const removeFiles = debounce<string>(paths => ipcRenderer.send(Channal.removeFiles, paths), 100);
 
 export class Uploader extends Component<{}, {}> {
   draggerProps: UploadProps<UploadFile> = {
@@ -39,7 +40,7 @@ export class Uploader extends Component<{}, {}> {
           break;
         }
         case "removed": {
-          ipcRenderer.send(Channal.removeFiles, [info.file.originFileObj.path]);
+          removeFiles(info.file.originFileObj.path);
           break;
         }
       }

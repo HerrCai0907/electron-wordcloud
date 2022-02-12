@@ -31,7 +31,7 @@ export class App extends Component<{}, { svgPath: string[] }> {
             </Row>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: "center" }}>Word Cloud ©2018 Created by Congcong Cai</Footer>
       </Layout>
     );
   }

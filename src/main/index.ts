@@ -49,14 +49,17 @@ app.on("activate", () => {
 const svgGenerator = new SvgGenerator();
 
 ipcMain.on(Channal.addFiles, async (ev: IpcMainEvent, data: ChannalType.AddFiles) => {
+  console.log(`add files ${data}`);
   await svgGenerator.onAddFiles(data);
   ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
 });
 ipcMain.on(Channal.removeFiles, async (ev: IpcMainEvent, data: ChannalType.RemoveFiles) => {
+  console.log(`remove files ${data}`);
   svgGenerator.onRemoveFiles(data);
   ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
 });
 ipcMain.on(Channal.changeSize, async (ev: IpcMainEvent, data: ChannalType.ChangeSize) => {
+  console.log(`change size ${data}`);
   svgGenerator.onChangeSize(data);
   ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
 });

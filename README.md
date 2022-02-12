@@ -1,4 +1,4 @@
-# electron-worldcloud
+# electron-wordcloud
 
 ### 介绍
 
