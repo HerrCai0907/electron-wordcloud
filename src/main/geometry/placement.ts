@@ -5,7 +5,7 @@ import { Box, TTFPath } from "../font/TTFPath";
 
 function archimedeanspiral(xita: number, offsetx: number, offsety: number): Point {
   const a = 0;
-  const b = 5;
+  const b = 3;
   const t = a + b * xita;
   return new Point(t * Math.cos(xita) + offsetx, t * Math.sin(xita) + offsety);
 }
@@ -36,12 +36,20 @@ function getPathRange(paths: TTFPath[]) {
   return { minx, maxx, miny, maxy };
 }
 
+function calculateScale(weight: number, max: number) {
+  if (weight > max) weight = max + 0.2 * (weight - max);
+  return 0.05 + 0.95 * weight;
+}
+
 export function placementAllWords(words: ExtractResult[]): Array<TTFPath> {
   const paths = new Array<TTFPath>();
   let xita = Math.random() * 10;
+  let weights = words.map(w => w.weight);
+  let mid = weights.sort().at(Math.floor(weights.length / 2));
+  let max = 2 * (mid == undefined ? 0 : mid);
   words.forEach((v, i) => {
     const target = defaultFont.getPath(v.word);
-    target.transform.scale(0.05 + 0.95 * v.weight);
+    target.transform.scale(calculateScale(v.weight, max));
     const box = target.box;
     const offsetx = -Math.abs(box.x1 - box.x2) / 2;
     const offsety = -Math.abs(box.y1 - box.y2) / 2;
