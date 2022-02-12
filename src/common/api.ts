@@ -1,16 +1,18 @@
 import { ErrorMessage } from "./errorInterface";
 
 export const Channal = {
-  errorHappened: "errorhappened",
+  errorHappened: "errorHappened",
 
   svgUpdated: "svgUpdated",
 
-  changeSize: "changesize",
-  addFiles: "addfiles",
-  removeFiles: "removefiles",
+  changeSize: "changeSize",
+  addFiles: "addFiles",
+  removeFiles: "removeFiles",
 
-  getColor: "getcolor",
-  getColorReply: "getcolorreply",
+  getColor: "getColor",
+  getColorReply: "getColorReply",
+
+  setTopN: "setTopN",
 };
 
 export namespace ChannalType {
@@ -22,6 +24,7 @@ export namespace ChannalType {
   export type AddFiles = string[];
   export type RemoveFiles = string[];
 
-  export type GetColor = number;
   export type GetColorReply = string[];
+
+  export type SetTopN = number;
 }

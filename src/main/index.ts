@@ -1,5 +1,6 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, IpcMainEvent, WebContents } from "electron";
 import { Channal, ChannalType } from "../common/api";
+import { ColorGenerator } from "./color/color";
 import { indexPath } from "./config";
 import { SvgGenerator } from "./generate";
 
@@ -46,24 +47,28 @@ app.on("activate", () => {
   }
 });
 
-// svg API
-
 const svgGenerator = new SvgGenerator();
+const colorGenerator = new ColorGenerator();
 
+// svg API
 ipcMain.on(Channal.addFiles, async (ev: IpcMainEvent, data: ChannalType.AddFiles) => {
   console.log(`add files ${data}`);
   await svgGenerator.onAddFiles(data);
-  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
+  ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });
-ipcMain.on(Channal.removeFiles, async (ev: IpcMainEvent, data: ChannalType.RemoveFiles) => {
+ipcMain.on(Channal.removeFiles, async (ev, data: ChannalType.RemoveFiles) => {
   console.log(`remove files ${data}`);
   svgGenerator.onRemoveFiles(data);
-  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
+  ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });
-ipcMain.on(Channal.changeSize, async (ev: IpcMainEvent, data: ChannalType.ChangeSize) => {
+ipcMain.on(Channal.changeSize, async (ev, data: ChannalType.ChangeSize) => {
   console.log(`change size ${data}`);
   svgGenerator.onChangeSize(data);
-  ev.reply(Channal.svgUpdated, svgGenerator.SvgPathStrings);
+  ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });
 
 // color API
+ipcMain.on(Channal.getColor, ev => {
+  console.log("get color");
+  ev.reply(Channal.getColorReply, colorGenerator.getColors(svgGenerator.topN));
+});

@@ -4,11 +4,12 @@ import { placementAllWords, scaleToMatchSize } from "./geometry/placement";
 import { getTextSafe } from "./reader/fileReader";
 import { TTFPath } from "./font/TTFPath";
 
-const topN = 64; // TODO
 export class SvgGenerator {
   private wordsMapping = new Map<string, ExtractResult[]>();
   private ttfPaths = new Array<TTFPath>();
   private size: number = 200;
+
+  topN = 64; // TODO
 
   constructor() {
     jiebaLoad(jiebaDictOption);
@@ -31,7 +32,7 @@ export class SvgGenerator {
     this._changeSize(newSize);
   }
 
-  get SvgPathStrings(): string[] {
+  get svgPathStrings(): string[] {
     return this.ttfPaths.map(v => v.toString());
   }
 
@@ -42,7 +43,7 @@ export class SvgGenerator {
           return;
         }
         let txt = await getTextSafe(path);
-        const cutRes = extract(txt, topN);
+        const cutRes = extract(txt, this.topN);
         this.wordsMapping.set(path, cutRes);
       })
     );
@@ -77,7 +78,7 @@ export class SvgGenerator {
     });
     summaryExtractResults.sort((a, b) => b.weight - a.weight);
 
-    this.ttfPaths = placementAllWords(summaryExtractResults.slice(0, topN));
+    this.ttfPaths = placementAllWords(summaryExtractResults.slice(0, this.topN));
   }
 
   private _changeSize = (newSize: number) => {
