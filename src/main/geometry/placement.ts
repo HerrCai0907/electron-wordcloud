@@ -3,11 +3,11 @@ import { defaultFont } from "../config";
 import { Point } from "./point";
 import { Box, TTFPath } from "../font/TTFPath";
 
-function archimedeanspiral(xita: number): Point {
+function archimedeanspiral(xita: number, offsetx: number, offsety: number): Point {
   const a = 0;
   const b = 5;
   const t = a + b * xita;
-  return new Point(t * Math.cos(xita), t * Math.sin(xita));
+  return new Point(t * Math.cos(xita) + offsetx, t * Math.sin(xita) + offsety);
 }
 
 function isRectIntersect(a: Box, b: Box): boolean {
@@ -42,9 +42,12 @@ export function placementAllWords(words: ExtractResult[]): Array<TTFPath> {
   words.forEach((v, i) => {
     const target = defaultFont.getPath(v.word);
     target.transform.scale(0.05 + 0.95 * v.weight);
+    const box = target.box;
+    const offsetx = -Math.abs(box.x1 - box.x2) / 2;
+    const offsety = -Math.abs(box.y1 - box.y2) / 2;
     let lastP = new Point(0, 0);
     do {
-      const p = archimedeanspiral(xita);
+      const p = archimedeanspiral(xita, offsetx, offsety);
       target.transform.move(p.x - lastP.x, p.y - lastP.y);
       lastP = p;
       xita += 0.2;
