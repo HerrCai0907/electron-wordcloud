@@ -5,7 +5,7 @@ import { Box, TTFPath } from "../font/TTFPath";
 
 function archimedeanspiral(xita: number, offsetx: number, offsety: number): Point {
   const a = 0;
-  const b = 3;
+  const b = 1;
   const t = a + b * xita;
   return new Point(t * Math.cos(xita) + offsetx, t * Math.sin(xita) + offsety);
 }

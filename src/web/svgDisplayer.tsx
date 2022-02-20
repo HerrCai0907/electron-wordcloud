@@ -49,12 +49,12 @@ export class SvgDisplayer extends Component<P, S> {
   override componentDidMount = () => {
     this.onChangeSize();
     ipcRenderer.on(Channal.svgUpdated, this.onRecvData);
-    ipcRenderer.on(Channal.getColorReply, this.onChangeColor);
+    ipcRenderer.on(Channal.colorUpdated, this.onChangeColor);
     window.addEventListener("resize", this.onChangeSize); //监听窗口大小改变
   };
   override componentWillUnmount = () => {
     ipcRenderer.off(Channal.svgUpdated, this.onRecvData);
-    ipcRenderer.off(Channal.getColorReply, this.onChangeColor);
+    ipcRenderer.off(Channal.colorUpdated, this.onChangeColor);
     window.removeEventListener("resize", this.onChangeSize); //监听窗口大小改变
   };
 

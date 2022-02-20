@@ -70,5 +70,15 @@ ipcMain.on(Channal.changeSize, async (ev, data: ChannalType.ChangeSize) => {
 // color API
 ipcMain.on(Channal.getColor, ev => {
   console.log("get color");
-  ev.reply(Channal.getColorReply, colorGenerator.getColors(svgGenerator.topN));
+  ev.reply(Channal.colorUpdated, colorGenerator.getColors(svgGenerator.topN));
+});
+
+// property
+ipcMain.on(Channal.setTopN, (ev, data: ChannalType.SetTopN) => {
+  svgGenerator.onChangeTopN(data);
+  ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
+});
+ipcMain.on(Channal.setChineseOnly, (ev, data: ChannalType.SetChineseOnly) => {
+  svgGenerator.onChangeChineseonly(data);
+  ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });
