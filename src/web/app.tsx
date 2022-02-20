@@ -4,7 +4,7 @@ const { Title } = Typography;
 const { Content, Footer, Header } = Layout;
 import "./app.css";
 import { SvgDisplayer } from "./svgDisplayer";
-import { Uploader } from "./uploader";
+import { Editor } from "./editor";
 
 export class App extends Component<{}, { svgPath: string[] }> {
   render() {
@@ -20,7 +20,7 @@ export class App extends Component<{}, { svgPath: string[] }> {
             <Row gutter={24} align="top">
               <Col span={12}>
                 <Card title="编辑区" bordered={true}>
-                  <Uploader />
+                  <Editor />
                 </Card>
               </Col>
               <Col span={12}>

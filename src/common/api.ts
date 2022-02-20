@@ -10,7 +10,7 @@ export const Channal = {
   removeFiles: "removeFiles",
 
   getColor: "getColor",
-  colorUpdated: "getColorReply",
+  colorUpdated: "colorUpdated",
 
   setTopN: "setTopN",
   setChineseOnly: "setChineseOnly",
@@ -25,7 +25,7 @@ export namespace ChannalType {
   export type AddFiles = string[];
   export type RemoveFiles = string[];
 
-  export type GetColorReply = string[];
+  export type ColorUpdated = string[];
 
   export type SetTopN = number;
   export type SetChineseOnly = boolean;

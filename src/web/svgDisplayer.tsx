@@ -41,7 +41,7 @@ export class SvgDisplayer extends Component<P, S> {
   };
 
   // color changed
-  private onChangeColor = (ev: IpcRendererEvent, data: ChannalType.GetColorReply) => {
+  private onChangeColor = (ev: IpcRendererEvent, data: ChannalType.ColorUpdated) => {
     this.setState({ colors: data });
   };
 

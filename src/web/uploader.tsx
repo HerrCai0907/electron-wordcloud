@@ -1,8 +1,7 @@
-import React from "react";
 import { Upload, UploadProps } from "antd";
 const { Dragger } = Upload;
 import { InboxOutlined } from "@ant-design/icons";
-import { Component } from "react";
+import React, { Component } from "react";
 import { UploadFile } from "antd/lib/upload/interface";
 import { ipcRenderer } from "electron";
 import { Channal } from "../common/api";
