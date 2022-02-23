@@ -7,10 +7,8 @@
   "scripts": {
     "prepare": "husky install",
     "postinstall": "scripts/postinstall.js",
-    "build:web": "webpack -c webpack-renderer.config.js",
-    "build:main": "webpack -c webpack-main.config.js",
-    "build": "npm run build:web && npm run build:main",
-    "watch": "webpack -c webpack-renderer.config.js -w &  webpack -c webpack-main.config.js -w",
+    "build": "webpack",
+    "watch": "webpack -w",
     "pack": "npm run build && electron-builder",
     "start": "electron --trace-warnings ."
   },

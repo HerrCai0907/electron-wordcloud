@@ -1,4 +1,7 @@
-module.exports = {
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const commonConfig = {
   mode: "development",
   devtool: "source-map",
   module: {
@@ -29,3 +32,37 @@ module.exports = {
   },
   plugins: [],
 };
+
+const mainConfig = {
+  entry: "./src/main/index.ts",
+  target: "electron-main",
+  output: {
+    path: path.resolve(__dirname, "./dist/main/"),
+    // publicPath: "/dist/",
+    filename: "main.js",
+    clean: true,
+  },
+  externals: {
+    nodejieba: "commonjs nodejieba",
+  },
+};
+
+const webConfig = {
+  entry: "./src/web/index.tsx",
+  target: "electron-renderer",
+  output: {
+    path: path.resolve(__dirname, "./dist/web"),
+    // publicPath: "/dist/",
+    filename: "web.js",
+    clean: true,
+  },
+  plugins: commonConfig.plugins.concat([
+    new HtmlWebpackPlugin({
+      title: "首页", //生成的页面标题<head><title>首页</title></head>
+      filename: "index.html", // dist目录下生成的文件名
+      template: "./src/web/index.html", // 我们原来的index.html，作为模板
+    }),
+  ]),
+};
+
+module.exports = [Object.assign({}, commonConfig, mainConfig), Object.assign({}, commonConfig, webConfig)];
