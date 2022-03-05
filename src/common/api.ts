@@ -1,4 +1,5 @@
 import { ErrorMessage } from "./errorInterface";
+import { ColorThema } from "./colorThema";
 
 export const Channal = {
   errorHappened: "errorHappened",
@@ -14,6 +15,8 @@ export const Channal = {
 
   setTopN: "setTopN",
   setChineseOnly: "setChineseOnly",
+
+  setThema: "setThema",
 };
 
 export namespace ChannalType {
@@ -29,4 +32,6 @@ export namespace ChannalType {
 
   export type SetTopN = number;
   export type SetChineseOnly = boolean;
+
+  export type SetThema = ColorThema;
 }

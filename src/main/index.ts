@@ -72,6 +72,10 @@ ipcMain.on(Channal.getColor, ev => {
   console.log("get color");
   ev.reply(Channal.colorUpdated, colorGenerator.getColors(svgGenerator.topN));
 });
+ipcMain.on(Channal.setThema, (ev, data: ChannalType.SetThema) => {
+  colorGenerator.setThema(data);
+  ev.reply(Channal.colorUpdated, colorGenerator.getColors(svgGenerator.topN));
+});
 
 // property
 ipcMain.on(Channal.setTopN, (ev, data: ChannalType.SetTopN) => {
