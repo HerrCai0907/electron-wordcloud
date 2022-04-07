@@ -18,3 +18,15 @@
 - 解码: jschardet + iconv-lite
 - 分词: nodejieba
 - 字体渲染: opentype.js
+
+### 开发
+
+运行`npm install` 或 `yarn` 前设置以下环境变量
+
+```bash
+export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/
+```
+
+```cmd
+$ENV:ELECTRON_MIRROR="http://npm.taobao.org/mirrors/electron/"
+```
