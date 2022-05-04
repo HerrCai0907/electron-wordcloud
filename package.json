@@ -30,6 +30,9 @@
       "mirror": "https://npm.taobao.org/mirrors/electron/"
     }
   },
+  "config": {
+    "ELECTRON_BUILDER_BINARIES_MIRROR": "https://npm.taobao.org/mirrors/electron-builder-binaries/"
+  },
   "repository": "https://gitee.com/cai_congcongcong/electron-worldcloud.git",
   "author": "Congcong Cai <congcongcai0907@163.com>",
   "license": "Apache-2.0",
