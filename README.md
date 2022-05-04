@@ -8,7 +8,7 @@
 
 ### 安装
 
-目前尚未完成发布，可下载代码后使用`yarn`安装依赖，使用`npm run pack`进行打包使用（只在开发环境 mac m1 上测试过）
+目前尚未完成发布，可下载代码后使用`yarn`安装依赖，使用`npm run pack`进行打包使用
 
 ### 使用的依赖
 
@@ -29,4 +29,14 @@ export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/
 
 ```cmd
 $ENV:ELECTRON_MIRROR="http://npm.taobao.org/mirrors/electron/"
+```
+
+### 打包
+
+运行`npm run pack`
+
+#### Macos
+
+```
+export PYTHON_PATH=/usr/local/bin/python2
 ```
