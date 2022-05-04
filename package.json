@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "scripts/postinstall.js",
+    "postinstall": "node scripts/postinstall.js",
     "build": "webpack",
     "watch": "webpack -w",
     "pack": "npm run build && electron-builder",
