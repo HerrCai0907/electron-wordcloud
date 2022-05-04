@@ -78,11 +78,11 @@ ipcMain.on(Channal.setThema, (ev, data: ChannalType.SetThema) => {
 });
 
 // property
-ipcMain.on(Channal.setTopN, (ev, data: ChannalType.SetTopN) => {
-  svgGenerator.onChangeTopN(data);
+ipcMain.on(Channal.setTopN, async (ev, data: ChannalType.SetTopN) => {
+  await svgGenerator.onChangeTopN(data);
   ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });
-ipcMain.on(Channal.setChineseOnly, (ev, data: ChannalType.SetChineseOnly) => {
-  svgGenerator.onChangeChineseonly(data);
+ipcMain.on(Channal.setChineseOnly, async (ev, data: ChannalType.SetChineseOnly) => {
+  await svgGenerator.onChangeChineseonly(data);
   ev.reply(Channal.svgUpdated, svgGenerator.svgPathStrings);
 });

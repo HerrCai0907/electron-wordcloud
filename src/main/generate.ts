@@ -1,9 +1,9 @@
-import { extract, ExtractResult, load as jiebaLoad } from "nodejieba";
-import { jiebaDictOption } from "./config";
 import { placementAllWords, scaleToMatchSize } from "./geometry/placement";
 import { getTextSafe } from "./reader/fileReader";
 import { TTFPath } from "./font/TTFPath";
 import { filterChinese } from "./reader/chFilter";
+import { ExtractResult } from "@congcongcai/jieba.js";
+import { JiebaExtractor } from "./extractor";
 
 interface FileCache {
   txt: string;
@@ -14,25 +14,22 @@ export class SvgGenerator {
   private wordsMapping = new Map<string, FileCache>();
   private ttfPaths = new Array<TTFPath>();
   private size: number = 200;
+  private extractor = new JiebaExtractor();
 
   topN = 64;
   filterCN = true;
 
-  constructor() {
-    jiebaLoad(jiebaDictOption);
-  }
-
-  onChangeChineseonly(filterCN: boolean) {
+  async onChangeChineseonly(filterCN: boolean) {
     if (filterCN == this.filterCN) return;
     this.filterCN = filterCN;
-    this._updateExtract();
+    await this._updateExtract();
     this._summaryResult();
     this._changeSize();
   }
-  onChangeTopN(topN: number) {
+  async onChangeTopN(topN: number) {
     if (topN == this.topN) return;
     this.topN = topN;
-    this._updateExtract();
+    await this._updateExtract();
     this._summaryResult();
     this._changeSize();
   }
@@ -58,10 +55,10 @@ export class SvgGenerator {
     return this.ttfPaths.map(v => v.toString());
   }
 
-  private _updateExtract = () => {
+  private _updateExtract = async () => {
     for (const cache of this.wordsMapping.values()) {
       const txt = this.filterCN ? filterChinese(cache.txt) : cache.txt;
-      cache.extractRes = extract(txt, this.topN);
+      cache.extractRes = await this.extractor.extract(txt, this.topN);
     }
   };
   private _addFiles = async (paths: string[]) => {
@@ -72,7 +69,7 @@ export class SvgGenerator {
         }
         const txt = await getTextSafe(path);
         const processedTxt = this.filterCN ? filterChinese(txt) : txt;
-        const cutRes = extract(processedTxt, this.topN);
+        const cutRes = await this.extractor.extract(processedTxt, this.topN);
         this.wordsMapping.set(path, { txt: txt, extractRes: cutRes });
       })
     );

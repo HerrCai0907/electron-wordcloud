@@ -1,4 +1,4 @@
-import { ExtractResult } from "nodejieba";
+import { ExtractResult } from "@congcongcai/jieba.js";
 import { defaultFont } from "../config";
 import { Point } from "./point";
 import { Box, TTFPath } from "../font/TTFPath";
