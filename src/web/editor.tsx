@@ -41,7 +41,9 @@ export class Editor extends Component<{}, {}> {
         <Divider />
         <Select defaultValue={defaultThema} style={{ width: 120 }} onChange={this.onChangeThema}>
           {colorThemas.map(thema => (
-            <Option value={thema.id}>{thema.id}</Option>
+            <Option value={thema.id} key={thema.id}>
+              {thema.id}
+            </Option>
           ))}
         </Select>
         <Divider />
