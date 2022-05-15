@@ -6,3 +6,5 @@ example.txt
 
 .DS_Store
 .vscode
+
+package-lock.json
