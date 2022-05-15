@@ -8,8 +8,9 @@
     "prepare": "husky install",
     "postinstall": "node scripts/postinstall.js",
     "build": "webpack",
+    "release": "webpack --mode production",
     "watch": "webpack -w",
-    "pack": "npm run build && electron-builder",
+    "pack": "npm run release && electron-builder",
     "start": "electron --trace-warnings ."
   },
   "build": {
