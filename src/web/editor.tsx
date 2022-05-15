@@ -5,20 +5,31 @@ import React, { Component } from "react";
 import { Channal, ChannalType } from "../common/api";
 import { ColorThema, colorThemas, defaultThema } from "../common/colorThema";
 import { Uploader } from "./uploader";
+import { debounceValue } from "./debounce";
 
 const { Option } = Select;
 
+const setChineseOnly = debounceValue((data: ChannalType.SetChineseOnly) => {
+  ipcRenderer.send(Channal.setChineseOnly, data);
+}, 10);
+const setTopN = debounceValue((data: ChannalType.SetTopN) => {
+  ipcRenderer.send(Channal.setTopN, data);
+}, 100);
+const setThema = debounceValue((data: ChannalType.SetThema) => {
+  ipcRenderer.send(Channal.setThema, data);
+}, 10);
+
 export class Editor extends Component<{}, {}> {
   onChangeChineseOnlySwitch: SwitchChangeEventHandler = (checked: ChannalType.SetChineseOnly, event) => {
-    ipcRenderer.send(Channal.setChineseOnly, checked);
+    setChineseOnly(checked);
   };
   onChangeTopN = (value: number | undefined) => {
     if (value == undefined) return;
-    ipcRenderer.send(Channal.setTopN, value);
+    setTopN(value);
   };
   onChangeThema = (value: ColorThema | undefined) => {
     if (value == undefined) return;
-    ipcRenderer.send(Channal.setThema, value);
+    setThema(value);
   };
 
   render() {
@@ -26,7 +37,7 @@ export class Editor extends Component<{}, {}> {
       <div>
         <Uploader></Uploader>
         <Divider />
-        单词数量: <InputNumber<number> min={10} max={1000} defaultValue={64} onChange={this.onChangeTopN} />
+        词云数量: <InputNumber<number> min={10} max={1000} defaultValue={64} onChange={this.onChangeTopN} />
         <Divider />
         <Select defaultValue={defaultThema} style={{ width: 120 }} onChange={this.onChangeThema}>
           {colorThemas.map(thema => (
