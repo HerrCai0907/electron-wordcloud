@@ -16,7 +16,7 @@
 - pdf 解析: pdfjs-dist
 - docx 解析: node-stream-zip + htmlparser2
 - 解码: jschardet + iconv-lite
-- 分词: nodejieba
+- 分词: nodejieba => @congcongcai/jieba
 - 字体渲染: opentype.js
 
 ### 开发
