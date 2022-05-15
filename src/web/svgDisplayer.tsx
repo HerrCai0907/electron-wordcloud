@@ -62,7 +62,7 @@ export class SvgDisplayer extends Component<P, S> {
     return (
       <div ref={this.myRef}>
         <svg width={this.state.l} height={this.state.l} xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <rect x="1" y="1" width={this.state.l - 1} height={this.state.l - 1} fill="none" stroke="#000000" strokeWidth={1} stroke-dasharray="5,5" />
+          <rect x="1" y="1" width={this.state.l - 1} height={this.state.l - 1} fill="none" stroke="#000000" strokeWidth={1} strokeDasharray="5,5" />
           {this.state.svgPath.map((v, i) => (
             <path d={v} key={i} fill={this.state.colors[i] || "#FFFFFF"} />
           ))}
