@@ -7,6 +7,7 @@ import { JiebaExtractor } from "./extractor";
 
 interface FileCache {
   txt: string;
+  filterCNtxt: string | null;
   extractRes: ExtractResult[];
 }
 
@@ -17,6 +18,8 @@ export class SvgGenerator {
   private extractor = new JiebaExtractor();
 
   topN = 64;
+  cachedTopN = 64 * 2;
+
   filterCN = true;
 
   async onChangeChineseonly(filterCN: boolean) {
@@ -29,7 +32,10 @@ export class SvgGenerator {
   async onChangeTopN(topN: number) {
     if (topN == this.topN) return;
     this.topN = topN;
-    await this._updateExtract();
+    if (topN > this.cachedTopN) {
+      this.cachedTopN = this.topN * 2;
+      await this._updateExtract();
+    }
     this._summaryResult();
     this._changeSize();
   }
@@ -57,8 +63,16 @@ export class SvgGenerator {
 
   private _updateExtract = async () => {
     for (const cache of this.wordsMapping.values()) {
-      const txt = this.filterCN ? filterChinese(cache.txt) : cache.txt;
-      cache.extractRes = await this.extractor.extract(txt, this.topN);
+      let txt: string;
+      if (this.filterCN) {
+        if (cache.filterCNtxt == null) {
+          cache.filterCNtxt = filterChinese(cache.txt);
+        }
+        txt = cache.filterCNtxt;
+      } else {
+        txt = cache.txt;
+      }
+      cache.extractRes = await this.extractor.extract(txt, this.cachedTopN);
     }
   };
   private _addFiles = async (paths: string[]) => {
@@ -69,8 +83,8 @@ export class SvgGenerator {
         }
         const txt = await getTextSafe(path);
         const processedTxt = this.filterCN ? filterChinese(txt) : txt;
-        const cutRes = await this.extractor.extract(processedTxt, this.topN);
-        this.wordsMapping.set(path, { txt: txt, extractRes: cutRes });
+        const cutRes = await this.extractor.extract(processedTxt, this.cachedTopN);
+        this.wordsMapping.set(path, { txt, filterCNtxt: this.filterCN ? processedTxt : null, extractRes: cutRes });
       })
     );
   };
@@ -83,7 +97,7 @@ export class SvgGenerator {
   private _summaryResult() {
     const summary = new Map<string, number>();
     for (const cache of this.wordsMapping.values()) {
-      const extractResults = cache.extractRes;
+      const extractResults = cache.extractRes.slice(0, this.topN);
       for (const extractResult of extractResults) {
         const thisValue = summary.get(extractResult.word);
         if (thisValue == undefined) {
